@@ -1,5 +1,17 @@
 import paho.mqtt.client as mqtt
+# from scripts.DB.config import cursor
+import psycopg2
+from scripts.api.servicers.services import service
 
+conn = psycopg2.connect(
+    host="localhost",
+    port="5432",
+    database="test",
+    user="postgres",
+    password="1234"
+)
+
+cursor = conn.cursor
 class subscriber:
     def on_connect(client, userdata, flags, rc):
         """ 
@@ -18,12 +30,5 @@ class subscriber:
         output:prints recieved message and the message
         """
         print(f"Received message: {str(msg.payload.decode())}")
-
-
-client = mqtt.Client()
-client.on_connect = subscriber.on_connect
-client.on_message = subscriber.on_message
-
-client.connect("localhost", 1883, 61)
-client.loop_forever()
+        service.create_an_item(str(msg.payload.decode()))
 

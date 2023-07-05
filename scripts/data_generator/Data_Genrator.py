@@ -2,7 +2,6 @@ import time
 import logging
 import pandas as pd
 import numpy as np
-import json
 from scripts.MQTT.publisher import publisher
 class generate_data:
 
@@ -19,6 +18,6 @@ class generate_data:
                 df2 = pd.DataFrame().assign(Parameter=df['Parameter'],random_values=df['random_values'])
                 df2 = df2.to_json(orient = 'records')
                 publisher.publish(df2)
-                time.sleep(15)
+                time.sleep(10)
         except Exception as e:
             logging.exception(e)
