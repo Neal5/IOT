@@ -1,5 +1,5 @@
 from database import postgres_base,engine
-from sqlalchemy import Column,Float
+from sqlalchemy import Column,Float,TIMESTAMP
 
 # from models import Item
 
@@ -7,7 +7,8 @@ print("Creating database ....")
 
 
 class Item(postgres_base):
-    __tablename__='Data'
+    __tablename__='timescale_iot'
+    datetime=Column(TIMESTAMP,nullable=False)
     kW=Column(Float,nullable=False,primary_key=True)
     kWh=Column(Float,nullable=False)
     Current=Column(Float,nullable=False)
