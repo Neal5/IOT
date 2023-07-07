@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class Item2(BaseModel): #serializer
+class ItemPydantic(BaseModel): #serializer
     kW: float
     kWh: float
     Current: float

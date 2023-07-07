@@ -1,0 +1,5 @@
+Parameter,Lower_Limit,Upper_Limit
+kW,0,1
+kWh,0,1
+Current ,0,1
+Voltage,0,1

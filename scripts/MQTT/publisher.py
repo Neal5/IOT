@@ -2,7 +2,7 @@ import logging
 
 import paho.mqtt.client as mqtt
 
-class publisher:
+class Publisher:
     def on_connect(client, userdata, flags, rc):
         """ 
         A function that on connecting gives info of the connect
@@ -14,18 +14,19 @@ class publisher:
         except Exception as e:
             logging.exception(e)
 
-    def publish(message):
+    def publish(message,device):
         """ 
         A functionto publish the given message
         params: message that needs to be published
         output:publishes the message and prints prints published and the given messag
         """
         try:
+            
             client = mqtt.Client()
-            client.on_connect = publisher.on_connect
+            client.on_connect = Publisher.on_connect
             client.connect("localhost", 1883, 61)
             client.loop_start()
-            client.publish("datagen", message)
+            client.publish("datagen_"+device, message)
             print("published",message,"\n")
         except Exception as e:
             logging.exception(e)
