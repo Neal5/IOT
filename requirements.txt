@@ -1,0 +1,7 @@
+pandas
+paho-mqtt
+fastapi
+sqlalchemy
+psycopg2
+numpy
+typer

@@ -2,7 +2,7 @@ import time
 import logging
 import pandas as pd
 import numpy as np
-from scripts.MQTT.publisher import Publisher
+from scripts.Device.publisher import Publisher
 class GenerateData:
 
     def simulate_data_a():
@@ -19,6 +19,7 @@ class GenerateData:
                 df2 = pd.DataFrame().assign(Parameter=df['Parameter'],random_values=df['random_values'])
                 df2 = df2.to_json(orient = 'records')
                 Publisher.publish(df2,"a")
+                
                 time.sleep(10)
         except Exception as e:
             logging.exception(e)

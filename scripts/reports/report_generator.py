@@ -1,4 +1,3 @@
-from scripts.api.DB.database import engine
 import logging
 from datetime import datetime
 import json
@@ -19,7 +18,7 @@ class GenerateReports:
                 value = item["random_values"]
                 converted_data[parameter] = value
             converted_data["timestamp"] = str(datetime.now())
-            path = "C:\\Users\\nealparas.mehta\\Desktop\\IOT\\scripts\\reports\\"
+            path = "scripts\\reports\\"
             filename = path + "device_" + device + ".json"
 
             with open(filename, "a") as json_file: 
