@@ -13,7 +13,7 @@ class GenerateData:
         """
         try:
             while True:
-                path = "scripts/parameters/energy_meter_limits_a.csv"
+                path = "scripts\Device\parameters\energy_meter_limits_a.csv"
                 df = pd.read_csv(path)
                 df['random_values'] = df.apply(lambda x: np.random.uniform(x.Lower_Limit, x.Upper_Limit), axis=1)
                 df2 = pd.DataFrame().assign(Parameter=df['Parameter'],random_values=df['random_values'])
@@ -32,7 +32,7 @@ class GenerateData:
         """
         try:
             while True:
-                path = "scripts/parameters/energy_meter_limits_b.csv"
+                path = "scripts\Device\parameters\energy_meter_limits_b.csv"
                 df = pd.read_csv(path)
                 df['random_values'] = df.apply(lambda x: np.random.uniform(x.Lower_Limit, x.Upper_Limit), axis=1)
                 df2 = pd.DataFrame().assign(Parameter=df['Parameter'],random_values=df['random_values'])

@@ -1,5 +1,5 @@
 from scripts.api.servicers.services import Service
-from scripts.reports.report_generator import GenerateReports
+from scripts.Device.reports.report_generator import GenerateReports
 
 class Subscriber:
     def on_connect_a(client, userdata, flags, rc):

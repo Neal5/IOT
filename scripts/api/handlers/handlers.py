@@ -4,7 +4,7 @@ from scripts.api.DB.database import SessionLocal
 import json
 import os 
 from fastapi.responses import FileResponse
-from scripts.reports.report_generator import GenerateReports
+from scripts.Device.reports.report_generator import GenerateReports
 
 db=SessionLocal()
 class Handling:
