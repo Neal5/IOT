@@ -105,7 +105,6 @@ desktop.ini
 # mypy
 .mypy_cache/
 
-reports
 logs
 .log
 /logs/
