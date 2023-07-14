@@ -7,3 +7,4 @@ numpy
 typer
 pyjwt
 passlib
+python-multipart

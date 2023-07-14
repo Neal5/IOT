@@ -1,15 +1,11 @@
 from scripts.api.handlers.handlers import Handling
 from scripts.api.schemas.response_schema import DefaultFailureResponse, DefaultResponse
-from fastapi import FastAPI,Depends,HTTPException,status
+from fastapi import FastAPI,Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from scripts.Device.data_generator.Data_Genrator import GenerateData
-from scripts.api.DB.pysql.pysql import SqlAlchemyOauth
 from scripts.api.DB.database import SessionLocal
-from scripts.api.schemas.db_schema import PydanticOauth
 import logging
-from passlib.hash import bcrypt
-import paho.mqtt.client as mqtt
-
+from scripts.Device.data_generator.Data_Genrator import GenerateData
 
 user = FastAPI()
 db=SessionLocal()
@@ -43,11 +39,28 @@ class Service:
         
     @user.post('/token')
     async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
+        """ A function that takes the form data that contains the username and if it matches the details stored in the database it returns a jwt token
+        params: form_data
+        returns: A success if a token has been genrated
+        """
         try:
             return(Handling.token_genration)
         except Exception as e:
             logging.exception(e)
 
+    @user.post("/simdata")
+    async def sim_devices(no,token: str = Depends(oauth2_scheme)):
+        """ A function that calls the report function from handling which return a json file containing the report
+        params: NA
+        returns: A json file containing the reports else Failed and the exception
+        """
+        try:
+            GenerateData.simulate_data_fastapi(no)
+            return Handling.report("m")
+        except Exception as e:
+            return DefaultFailureResponse(
+                    message="Failed", error=str(e)
+                ).dict()
     # @user.post('/users')
     # async def create_user(user: PydanticOauth):
     #     try:

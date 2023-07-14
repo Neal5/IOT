@@ -42,3 +42,26 @@ class Subscriber:
             logging.exception(e)
 
 
+    def on_connect_a(client, userdata, flags, rc):
+        """ 
+        A function that connects to the publisher 
+        params: client, result code, userdata and flags
+        output: prints on successful connection and gives the result code
+        """
+        try:
+            print(f"Connected with result code {str(rc)}")
+            client.subscribe("datagen_a")
+        except Exception as e:
+            logging.exception(e)
+
+    def on_connect_mul(client, userdata, flags, rc):
+        """ 
+        A function that connects to the publisher 
+        params: client, result code, userdata and flags
+        output: prints on successful connection and gives the result code
+        """
+        try:    
+            print(f"Connected with result code {str(rc)}")
+            client.subscribe("datagen_m")
+        except Exception as e:
+            logging.exception(e)
