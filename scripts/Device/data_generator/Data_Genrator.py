@@ -5,13 +5,14 @@ import numpy as np
 from scripts.Device.publisher import Publisher
 class GenerateData:
 
-    def simulate_data_a():
+    def simulate_data_a(ttl):
         """ 
         A function that converts the given csv file into a dataframe creates a new dataframe containing only the parameters and the randomly generated value between the given limits and publishes a string using the publish method defined in scripts.MQTT.publisher
         params: Uses the energy_meter_limit.csv in the parameters folder
         output:publishes a string using the publish method defined in scripts.MQTT.publisher
         """
         try:
+            timeout = time.time() + int(ttl)*60
             while True:
                 path = "scripts\Device\parameters\energy_meter_limits_a.csv"
                 df = pd.read_csv(path)
@@ -19,7 +20,8 @@ class GenerateData:
                 df2 = pd.DataFrame().assign(Parameter=df['Parameter'],random_values=df['random_values'])
                 df2 = df2.to_json(orient = 'records')
                 Publisher.publish(df2,"a")
-                
+                if(time.time()>timeout):
+                    break
                 time.sleep(10)
         except Exception as e:
             logging.exception(e)

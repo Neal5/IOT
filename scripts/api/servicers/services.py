@@ -1,5 +1,19 @@
 from scripts.api.handlers.handlers import Handling
 from scripts.api.schemas.response_schema import DefaultFailureResponse, DefaultResponse
+from fastapi import FastAPI,Depends,HTTPException,status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from scripts.Device.data_generator.Data_Genrator import GenerateData
+from scripts.api.DB.pysql.pysql import SqlAlchemyOauth
+from scripts.api.DB.database import SessionLocal
+from scripts.api.schemas.db_schema import PydanticOauth
+import logging
+from passlib.hash import bcrypt
+import paho.mqtt.client as mqtt
+
+
+user = FastAPI()
+db=SessionLocal()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 
 class Service:
     def create_an_item(item):
@@ -13,17 +27,56 @@ class Service:
             return DefaultFailureResponse(
                 message="Failed", error=str(e)
             ).dict()
-    def download_file():
-        """ A function that calls the report function from handling which return a csv file containing the report
+
+    @user.get("/")
+    async def download_file(device_name,token: str = Depends(oauth2_scheme)):
+        """ A function that calls the report function from handling which return a json file containing the report
         params: NA
-        returns: A CSV file containing the reports else Failed and the exception
+        returns: A json file containing the reports else Failed and the exception
         """
         try:
-            return Handling.report()
+            return Handling.report(device_name)
         except Exception as e:
             return DefaultFailureResponse(
                     message="Failed", error=str(e)
                 ).dict()
+        
+    @user.post('/token')
+    async def generate_token(form_data: OAuth2PasswordRequestForm = Depends()):
+        try:
+            return(Handling.token_genration)
+        except Exception as e:
+            logging.exception(e)
+
+    # @user.post('/users')
+    # async def create_user(user: PydanticOauth):
+    #     try:
+    #         db_item = db.query(SqlAlchemyOauth).filter(SqlAlchemyOauth.id==user.id).first()
+            
+    #         if db_item is not None:
+    #             return HTTPException(status_code=400,detail="Item already exists")
+    #         new_item=SqlAlchemyOauth(
+    #             id=user.id,
+    #             username=user.username,
+    #             password_hash=bcrypt.hash(user.password_hash)
+    #         )
+    #         db.add(new_item)
+    #         db.commit()
+    #         return new_item
+    #     except Exception as e:
+    #         logging.exception(e)
+
+    @user.post('/create-data-a')
+    async def sim_data(ttl,token: str = Depends(oauth2_scheme)):
+        """ A function that takes in the ttl(time to live in minutes) and generates data for device a every 10 second for that amount of time
+        params: time to live
+        returns: generates the data and writes it into a the json file for device a
+        """
+        try:
+            GenerateData.simulate_data_a(ttl)
+        except Exception as e:
+            logging.exception(e)
+
         
 
     

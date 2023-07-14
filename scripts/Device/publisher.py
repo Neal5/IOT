@@ -16,7 +16,7 @@ class Publisher:
 
     def publish(message,device):
         """ 
-        A functionto publish the given message
+        A function to publish the given message
         params: message that needs to be published
         output:publishes the message and prints prints published and the given messag
         """
